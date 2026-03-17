@@ -1,0 +1,8 @@
+{
+    "action" : "playerResponse",
+    "attacker" : "Name1",
+    "target" : "Name2",
+    "card" : [
+        "CardID1", "CardID2"
+    ]
+}

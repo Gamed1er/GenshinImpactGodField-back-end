@@ -1,9 +1,12 @@
 version: '3.8'
 
 services:
-  discord-bot:
+  genshin_god_field:
     build: .
     container_name: genshin_god_field
     restart: always
-    volumes:
-      - ./data:/app/data  # 關鍵：將本地的 data 資料夾同步到容器，確保 JSON 不會消失
+    # 關鍵：將主機的 65432 對接到容器的 65432
+    ports:
+      - "65432:65432"
+    # 如果有用到環境變數（例如 DB 密碼），可以加在這裡
+    # env_file: .env

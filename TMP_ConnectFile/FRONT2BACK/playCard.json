@@ -1,0 +1,8 @@
+{
+    "action" : "playCard",
+    "attacker" : "Name1",
+    "target" : "Name2",
+    "cards" : [
+        "CardID1", "CardID2", "CardID3"
+    ]
+}

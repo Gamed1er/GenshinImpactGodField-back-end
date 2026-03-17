@@ -1,0 +1,32 @@
+{
+    "action" : "RenewGameStatus",
+    "players" : [
+        {
+            "name" : "Name1",
+            "alive" : true,
+            "hp" : 99,
+            "mp" : 99,
+            "coin" : 99,
+            "element" : "None",
+            "strength" : 99,
+            "agile" : 99,
+            "burning" : 99,
+            "frozen" : 99
+        },
+        {
+            "name" : "Name2",
+            "alive" : true,
+            "hp" : 99,
+            "mp" : 99,
+            "coin" : 99,
+            "element" : "None",
+            "strength" : 99,
+            "agile" : 99,
+            "burning" : 99,
+            "frozen" : 99
+        }
+    ],
+    "cards" : [
+        "CardID1", "CardID2", "CardID3"
+    ]
+}
