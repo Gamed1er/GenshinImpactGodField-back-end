@@ -1,0 +1,3 @@
+[submodule "CardData"]
+	path = CardData
+	url = https://github.com/Gamed1er/GameData.git
