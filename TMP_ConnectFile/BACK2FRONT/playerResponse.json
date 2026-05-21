@@ -1,5 +1,5 @@
 {
-    "action" : "playerResponse",
+    "action" : "PlayerResponse",
     "attacker" : "Name1",
     "target" : "Name2",
     "card" : [

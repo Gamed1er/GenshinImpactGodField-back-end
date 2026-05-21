@@ -20,6 +20,7 @@ def start_server():
                     try:
                         data = conn.recv(1024).decode('utf-8')
                         if not data: break
+                        print(f"接收到 data : {data}")
                         request = json.loads(data)
                         action = request.get("action")
 

@@ -1,4 +1,4 @@
 {
-    "action" : "playerTurns",
+    "action" : "PlayerTurns",
     "type" : "Action, Respond, None"
 }
