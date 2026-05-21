@@ -1,97 +1,103 @@
-import socket
-import json
-import random
+import queue
+import time
+from communicate import Communicator
+from room_controller import room_controller
+from moudle import *
 
-# 存放房間資料的字典：{ "12345": ["Name1", "Name2"] }
-rooms = {}
+def broadcast_to_room(communicator, room_num, message_dict):
+    target_room = room_controller.rooms.get(room_num)
+    if target_room:
+        for cid in target_room.players.keys():
+            communicator.send(cid, message_dict)
 
-def start_server():
-    host = '127.0.0.1'
-    port = 65432
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind((host, port))
-        s.listen()
-        print(f"房間伺服器已啟動...")
+def send_renew_room_status(communicator, room_num, members_list):
+    renew_packet = {
+        "action": "RenewRoomStatus",
+        "room_status": {
+            "room_number": room_num,
+            "players": members_list
+        }
+    }
+    broadcast_to_room(communicator, room_num, renew_packet)
 
-        while True:
-            conn, addr = s.accept()
-            with conn:
-                while True:
-                    try:
-                        data = conn.recv(1024).decode('utf-8')
-                        if not data: break
-                        print(f"接收到 data : {data}")
-                        request = json.loads(data)
-                        action = request.get("action")
+def main():
+    communicator = Communicator(port=65432)
+    communicator.start_server()
 
-                        if action == "CreateRoom":
-                            room_id = random.randint(10000, 99999) # 測試用固定房號
-                            player_name = request.get("player_name")
-                            rooms[room_id] = [player_name]
-                            
-                            # 1. 回傳成功創建
-                            response = {"action": "CreateRoomResponse", "status": "Success", "room_number": room_id}
-                            conn.sendall((json.dumps(response) + "\n").encode('utf-8'))
-                            
-                            # 2. 立即發送房間狀態更新
-                            renew_msg = {
-                                "action": "RenewRoomStatus",
-                                "room_status": {"room_number": room_id, "players": rooms[room_id]}
-                            }
-                            conn.sendall((json.dumps(renew_msg) + "\n").encode('utf-8'))
+    while True:
+        try:
+            packet = communicator.msg.get(block=True, timeout=0.1)
+            client_id = packet["client_id"]
+            event = packet["event"]
+            data = packet["data"]
 
-                        elif action == "JoinRoom":
-                            room_id = request.get("room_number")
-                            player_name = request.get("player_name")
-                            
-                            if room_id in rooms:
-                                rooms[room_id].append(player_name)
-                                # 回傳加入成功
-                                response = {"action": "JoinRoomResponse", "status": "Success", "room_number": room_id}
-                                conn.sendall((json.dumps(response) + "\n").encode('utf-8'))
-                                
-                                # 更新房間狀態
-                                renew_msg = {
-                                    "action": "RenewRoomStatus",
-                                    "room_status": {"room_number": room_id, "players": rooms[room_id]}
-                                }
-                                conn.sendall((json.dumps(renew_msg) + "\n").encode('utf-8'))
-                            else:
-                                response = {"action": "JoinRoomResponse", "status": "Fail"}
-                                conn.sendall((json.dumps(response) + "\n").encode('utf-8'))
-                        
-                        elif action == "LeaveRoom":
-                            room_id = request.get("room_number")
-                            player_name = request.get("player_name")
-                            
-                            # 統一轉換為字串比較，避免型別錯誤
-                            room_id = str(room_id) if room_id else None
-                            
-                            if room_id in rooms:
-                                if player_name in rooms[room_id]:
-                                    rooms[room_id].remove(player_name)
-                                    print(f"【請求】離開房間：玩家 {player_name} 已離開房號 {room_id}")
-                                    
-                                    # 如果房間沒人了，釋放記憶體
-                                    if not rooms[room_id]:
-                                        del rooms[room_id]
-                                        print(f"房間 {room_id} 已空，正式關閉。")
-                                    
-                                    # 回傳成功訊息
-                                    response = {"action": "LeaveRoomResponse", "status": "Success"}
-                                    conn.sendall((json.dumps(response) + "\n").encode('utf-8'))
-                                    
-                                    # 如果你之後實作了廣播系統，這裡應該還要發送 RenewRoomStatus 給房間內剩餘的人
-                                else:
-                                    response = {"action": "LeaveRoomResponse", "status": "Fail", "message": "玩家不在房間內"}
-                                    conn.sendall((json.dumps(response) + "\n").encode('utf-8'))
-                            else:
-                                response = {"action": "LeaveRoomResponse", "status": "Fail", "message": "找不到房間"}
-                                conn.sendall((json.dumps(response) + "\n").encode('utf-8'))
+            if event == "CreateRoom":
+                response = room_controller.create_room(client_id, data)
+                communicator.send(client_id, response)
+                if response["status"] == "Success":
+                    player_name = data.get("player_name", "未命名玩家")
+                    send_renew_room_status(communicator, response["room_number"], [player_name])
 
+            elif event == "JoinRoom":
+                response = room_controller.join_room(client_id, data)
+                room_num = data.get("room_number")
 
-                    except Exception as e:
-                        print(f"錯誤: {e}")
-                        break
+                client_response = {
+                        "action": response["action"],
+                        "status": response["status"]
+                }
+                
+                if "room_number" in response:
+                    client_response["room_number"] = response["room_number"]
+                
+                if "exception" in response:
+                    client_response["exception"] = response["exception"]
 
-start_server()
+                if response["status"] == "Success":
+                        send_renew_room_status(communicator, int(room_num), response["members_internal"])
+
+            elif event == "LeaveRoom":
+                response = room_controller.leave_room(client_id, data)
+                room_num = data.get("room_number")
+
+                client_response = {
+                        "action": response["action"],
+                        "status": response["status"]
+                }
+
+                if "exception" in response:
+                        client_response["exception"] = response["exception"]
+                communicator.send(client_id, client_response)
+
+                if response["status"] == "Success" and not response.get("room_closed", False):
+                        send_renew_room_status(communicator, int(room_num), response["members_internal"])
+
+            elif event == "disconnect":
+                disconnect_report = room_controller.disconnect(client_id)
+                
+                if disconnect_report:
+                    room_num = disconnect_report["room_number"]
+                    
+                    if disconnect_report["room_closed"]:
+                        terminate_packet = {
+                            "action": "LeaveRoomResponse",
+                            "status": "Success",
+                            "note": "Someone disconnected. Game room has closed."
+                        }
+                        for cid in disconnect_report["remaining_client_ids"]:
+                            communicator.send(cid, terminate_packet)
+                    else:
+                        send_renew_room_status(communicator, int(room_num), disconnect_report["remaining_members"])
+
+            communicator.msg.task_done()
+
+        except queue.Empty:
+            pass
+        except KeyboardInterrupt:
+            print("\n[App] 伺服器已安全關閉。")
+            break
+        except Exception as e:
+            print(f"[App] 發生未預期錯誤: {e}")
+
+if __name__ == "__main__":
+    main()
