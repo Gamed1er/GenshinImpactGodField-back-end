@@ -36,9 +36,11 @@ class RoomController:
             }
         
     def join_room(self, client_id, data):
+        print(self.rooms)
         try:
             player_name = data.get("player_name", "未命名玩家")
             room_num = data.get("room_number")
+            target = self.rooms[room_num]
 
             if room_num not in self.rooms:
                 print(f"[Room_controller] 玩家 {player_name}嘗試加入不存在的房號 [{room_num}]")
@@ -48,7 +50,7 @@ class RoomController:
                     "exception" : "room doesn't exist."
                 }
             
-            if room.status != "LOBBY":
+            if target.status != "LOBBY":
                 print(f"[Room_controller] 玩家 {player_name}嘗試加入已經開始的房間 [{room_num}]")
                 return {
                     "action" : "JoinRoomResponse",
@@ -57,7 +59,7 @@ class RoomController:
                 }
             
             new_player = player(client_id, player_name)
-            room.players[client_id] = new_player
+            target.players[client_id] = new_player
 
             print(f"[Room_controller] 玩家 {player_name}({client_id}) 成功加入了房間 [{room_num}]")
 
@@ -68,7 +70,7 @@ class RoomController:
             }
         
         except Exception as e:
-            print(f"[Room_controller] 玩家 {player_name}({client_id}) 加入失敗")
+            print(f"[Room_controller] 玩家 {player_name}({client_id}) 加入失敗 {e}")
             return {
                     "action" : "JoinRoomResponse",
                     "status" : "Fail",
@@ -148,6 +150,13 @@ class RoomController:
                     }
                 
         return None
+
+    def create_player_list(self, room_num):
+        List = []
+        for player in self.rooms[room_num].players.values():
+            List.append(player.name)
+
+        return List
     
 room_controller = RoomController()
 

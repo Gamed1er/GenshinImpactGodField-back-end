@@ -1,0 +1,10 @@
+{
+    "action" : "PlayerRoundEnd",
+    "effects" : [
+        {
+            "target" : "attacker / victim",
+            "type" : "heal / damage / shield",
+            "amount" : 0
+        }
+    ]
+}

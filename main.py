@@ -54,7 +54,10 @@ def main():
                     client_response["exception"] = response["exception"]
 
                 if response["status"] == "Success":
-                        send_renew_room_status(communicator, int(room_num), response["members_internal"])
+                        print(111)
+                        player_list = room_controller.create_player_list(room_num)
+                        print(player_list)
+                        send_renew_room_status(communicator, int(room_num), player_list)
 
             elif event == "LeaveRoom":
                 response = room_controller.leave_room(client_id, data)
