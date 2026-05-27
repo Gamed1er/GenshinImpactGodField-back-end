@@ -3,7 +3,7 @@
     "effects" : [
         {
             "target" : "attacker / victim",
-            "type" : "heal / damage / shield / burn / abyss",
+            "type" : "heal / damage / shield / burn / abyss / frozen",
             "amount" : 0
         }
     ]
