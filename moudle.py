@@ -6,12 +6,12 @@ class player:
         self.alive = True
         self.hp = 0
         self.mp = 0
-        self.coin = 0
-        self.element = "None"
+        self.element = "NONE"
         self.strength = 0
         self.agile = 0
         self.burning = 0
         self.frozen = 0
+        self.shield = 0
         self.hand = []
 
 class room:
