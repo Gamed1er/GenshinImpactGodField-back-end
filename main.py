@@ -1,8 +1,8 @@
 import queue
-import time
 from communicate import Communicator
 from room_controller import room_controller
 from moudle import *
+from game import Game
 
 def broadcast_to_room(communicator, room_num, message_dict):
     target_room = room_controller.rooms.get(room_num)
@@ -30,8 +30,7 @@ def main():
             client_id = packet["client_id"]
             event = packet["event"]
             data = packet["data"]
-
-            if event == "CreateRoom":
+            if event == "CreateRoom":                 
                 response = room_controller.create_room(client_id, data)
                 communicator.send(client_id, response)
                 if response["status"] == "Success":
@@ -53,10 +52,10 @@ def main():
                 if "exception" in response:
                     client_response["exception"] = response["exception"]
 
+                communicator.send(client_id, client_response)
+
                 if response["status"] == "Success":
-                        print(111)
                         player_list = room_controller.create_player_list(room_num)
-                        print(player_list)
                         send_renew_room_status(communicator, int(room_num), player_list)
 
             elif event == "LeaveRoom":
@@ -70,10 +69,12 @@ def main():
 
                 if "exception" in response:
                         client_response["exception"] = response["exception"]
+
                 communicator.send(client_id, client_response)
 
                 if response["status"] == "Success" and not response.get("room_closed", False):
-                        send_renew_room_status(communicator, int(room_num), response["members_internal"])
+                        player_list = room_controller.create_player_list(room_num)
+                        send_renew_room_status(communicator, int(room_num), player_list)
 
             elif event == "disconnect":
                 disconnect_report = room_controller.disconnect(client_id)
@@ -92,6 +93,64 @@ def main():
                     else:
                         send_renew_room_status(communicator, int(room_num), disconnect_report["remaining_members"])
 
+            elif event == "StartGame":
+                room_num = data.get("room_number")
+                room_num = int(room_num)
+
+                target_room = room_controller.rooms.get(room_num)
+                if target_room and target_room.status == "LOBBY":
+                    target_room.status = "PLAYING"
+
+                    game_instance = Game(room_num, target_room.players)
+                    target_room.game_instance = game_instance
+                    print(f"[App] 房間 [{room_num}] 已成功初始化Game，開始向前端發送開戰資料...")
+
+                    packets_to_send = game_instance.start_game_setup()
+                    
+                    for pack in packets_to_send:
+                        target = pack["target"]
+                        msg_data = pack["data"]
+                        
+                        if target == "broadcast":
+                            broadcast_to_room(communicator, room_num, msg_data)
+                        else:
+                            communicator.send(target, msg_data)
+            
+            elif event == "playCard":
+                room_num = data.get("room_number")
+                room_num = int(room_num)
+
+                target_room = room_controller.rooms.get(room_num)
+                if target_room and target_room.status == "PLAYING" and target_room.game_instance:
+                    game_instance = target_room.game_instance
+                    packets_to_send = game_instance.handle_play_card(client_id, data)
+
+                    for pack in packets_to_send:
+                        target = pack["target"]
+                        msg_data = pack["data"]
+                        if target == "broadcast":
+                            broadcast_to_room(communicator, room_num, msg_data)
+                        else:
+                            communicator.send(target, msg_data)
+
+            elif event == "playCardRespond":
+                room_num = data.get("room_number")
+                room_num = int(room_num)
+
+                target_room = room_controller.rooms.get(room_num)
+                if target_room and target_room.status == "PLAYING" and target_room.game_instance:
+                    game_instance = target_room.game_instance
+
+                    packets_to_send = game_instance.handle_play_card_respond(client_id, data)
+
+                    for pack in packets_to_send:
+                        target = pack["target"]
+                        msg_data = pack["data"]
+                        if target == "broadcast":
+                            broadcast_to_room(communicator, room_num, msg_data)
+                        else:
+                            communicator.send(target, msg_data)
+
             communicator.msg.task_done()
 
         except queue.Empty:
@@ -100,7 +159,7 @@ def main():
             print("\n[App] 伺服器已安全關閉。")
             break
         except Exception as e:
-            print(f"[App] 發生未預期錯誤: {e}")
+             print(f"[App] 發生未預期錯誤: {e}")
 
 if __name__ == "__main__":
-    main()
+     main()
