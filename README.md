@@ -23,4 +23,4 @@
 | --- game.py (for each playing room, it's a game object)
 | --- effect_processor.py (to resolve card effect durning the game)
 | --- moudle.py (moudles for player & room object)
-ttt
+```
