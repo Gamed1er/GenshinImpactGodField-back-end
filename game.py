@@ -486,9 +486,11 @@ class Game:
 
         # 元素反應判斷（若護盾還在，不掛元素，此處先用護盾判斷略過）
         reaction_key = EffectProcessor.get_reaction_key(attack_element, target_obj)
-        final_attack, additions = EffectProcessor.calc_attack(
+        final_attack, additions, overridden_element = EffectProcessor.calc_attack(
             played_cards, attacker_obj, reaction_key, victim=target_obj
         )
+        if overridden_element:
+            attack_element = overridden_element
         is_true = EffectProcessor.is_true_damage(attack_element)
 
         # 儲存戰鬥狀態

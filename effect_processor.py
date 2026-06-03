@@ -66,14 +66,15 @@ class EffectProcessor:
         attacker: player,
         reaction_key: str | None = None,
         victim: player | None = None
-    ) -> tuple[int, list[str]]:
+    ) -> tuple[int, list[str], str]:
         """
         計算這次出牌的總攻擊力。
-        回傳 (final_attack, additions)
-        additions 是給前端顯示用的加成標籤清單。
+        回傳 (final_attack, additions, final_element)
+        final_element 可能被 change_attack_attribute 改變。
         """
-        additions   = []
-        base_damage = 0
+        additions     = []
+        base_damage   = 0
+        final_element = None  # 由外部傳入，這裡只負責偵測是否被覆蓋
 
         for card in cards:
             if not card:
@@ -84,10 +85,13 @@ class EffectProcessor:
             # 基礎攻擊值
             base_damage += attribute.get("attack", 0)
 
-            # change_attack_attribute
+            # change_attack_attribute：修改攻擊值，也可轉換攻擊元素
             if "change_attack_attribute" in effects:
-                delta = effects["change_attack_attribute"].get("attack", 0)
+                cfg   = effects["change_attack_attribute"]
+                delta = cfg.get("attack", 0)
                 base_damage += delta
+                if "element" in cfg:
+                    final_element = cfg["element"]  # 覆蓋攻擊元素
 
             # 爆擊
             if "critic" in effects:
@@ -96,17 +100,24 @@ class EffectProcessor:
                     base_damage *= 2
                     additions.append("爆擊")
 
-            # add_damage_when_exist_element：目標身上有指定元素時加傷
+            # add_damage_when_shield：攻擊者有護盾時加傷
+            if "add_damage_when_shield" in effects:
+                if attacker.shield > 0:
+                    bonus = effects["add_damage_when_shield"].get("amount", 0)
+                    base_damage += bonus
+                    additions.append(f"護盾加傷 +{bonus}")
+
+            # add_damage_when_exist_element
             if "add_damage_when_exist_element" in effects and victim is not None:
-                cfg              = effects["add_damage_when_exist_element"]
+                cfg               = effects["add_damage_when_exist_element"]
                 required_elements = cfg.get("element", [])
-                bonus            = cfg.get("amount", 0)
-                victim_elem      = victim.element if victim.element else "NONE"
+                bonus             = cfg.get("amount", 0)
+                victim_elem       = victim.element if victim.element else "NONE"
                 if victim_elem in required_elements:
                     base_damage += bonus
                     additions.append(f"元素加傷 +{bonus}")
 
-            # add_damage_when_frozen：目標冰凍時加傷
+            # add_damage_when_frozen
             if "add_damage_when_frozen" in effects and victim is not None:
                 if victim.frozen > 0:
                     bonus = effects["add_damage_when_frozen"].get("amount", 0)
@@ -127,7 +138,7 @@ class EffectProcessor:
                 base_damage *= 2
                 additions.append("元素反應 x2")
 
-        return max(0, base_damage), additions
+        return max(0, base_damage), additions, final_element
 
     # ════════════════════════════════════════════════
     #  3. 防禦力計算
@@ -373,6 +384,13 @@ class EffectProcessor:
                 if key in effects:
                     cfg    = effects[key]
                     to_app = cfg.get("to_apply", "this")
+                    # 若有 element 欄位，當作 apply_element 處理
+                    if "element" in cfg:
+                        target = _resolve_target(to_app)
+                        elem   = cfg["element"]
+                        if target and elem != "NONE" and not (to_app == "victim" and not hit_victim):
+                            target.element = elem
+                        continue
                     # 套用到 victim 時需要有穿透
                     if to_app == "victim" and not hit_victim:
                         continue
