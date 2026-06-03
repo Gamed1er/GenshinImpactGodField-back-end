@@ -1,0 +1,22 @@
+{
+    "id": "BlackcliffSlasher",
+    "type": "Attack",
+    "element": "GEO",
+    "ui": {
+        "name": "黑岩斬刀",
+        "imagePath": "/project/Images/Weapons/BlackcliffSlasher.png",
+        "description": "攻 8",
+        "description2": "護盾 + 4"
+    },
+    "attribute": {
+        "attack": 8,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "shield",
+            "to_apply": "attacker",
+            "amount": 4
+        }
+    }
+}

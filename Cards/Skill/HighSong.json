@@ -1,0 +1,24 @@
+{
+    "id": "HighSong",
+    "type": "Attack",
+    "element": "ANEMO",
+    "ui": {
+        "name": "高天之歌",
+        "imagePath": "/project/Images/Skills/HighSong.png",
+        "description": "解除負面效果",
+        "description2": "消耗 mp : 5"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 6,
+        "mp_cost": 5
+    },
+    "effects": {
+        "skill": {
+            "mp_cost": 5
+        },
+        "wipe_effect": {
+            "to_apply": "this"
+        }
+    }
+}

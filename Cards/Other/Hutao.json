@@ -1,0 +1,21 @@
+{
+    "id": "Hutao",
+    "type": "AttackMuti",
+    "element": "PYRO",
+    "ui": {
+        "name": "蝶引來生",
+        "imagePath": "/project/Images/Items/Hutao.png",
+        "description": "附火",
+        "description2": "攻 +5 並附加火"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 0
+    },
+    "effects": {
+        "change_attack_attribute": {
+            "attack": 5,
+            "element": "PYRO"
+        }
+    }
+}

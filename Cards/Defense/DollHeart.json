@@ -1,0 +1,22 @@
+{
+    "id": "DollHeart",
+    "type": "Defense",
+    "element": "NONE",
+    "ui": {
+        "name": "魔偶機心",
+        "imagePath": "/project/Images/Armors/DollHeart.png",
+        "description": "守 12",
+        "description2": "敏捷 + 2"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 12
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "agile",
+            "to_apply": "victim",
+            "amount": 2
+        }
+    }
+}

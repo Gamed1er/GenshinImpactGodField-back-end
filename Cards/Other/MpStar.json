@@ -1,0 +1,22 @@
+{
+    "id": "MpStar",
+    "type": "Attack",
+    "element": "NONE",
+    "ui": {
+        "name": "魔力之星",
+        "imagePath": "/project/Images/Items/MpStar.png",
+        "description": "15 mp",
+        "description2": "恢復 15 mp"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "mp",
+            "to_apply": "this",
+            "amount": 15
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "action" : "PlayerResponse",
+    "attacker" : "Name1",
+    "target" : "Name2",
+    "card" : [
+        "CardID1", "CardID2"
+    ],
+    "damage_details" : {
+        "final_defense" : 0,
+        "addition" : [
+            "顯示在前端的特效，表示這段傷害受到甚麼加成",
+            "例如 敏捷 x"
+        ]
+    }
+}

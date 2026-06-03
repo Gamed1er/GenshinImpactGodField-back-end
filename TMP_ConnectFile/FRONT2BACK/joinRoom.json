@@ -1,0 +1,5 @@
+{
+    "action" : "JoinRoom",
+    "player_name" : "Name1",
+    "room_number" : 12345
+}

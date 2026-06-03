@@ -1,0 +1,22 @@
+{
+    "id": "Crystal2",
+    "type": "Defense",
+    "element": "NONE",
+    "ui": {
+        "name": "翠凝晶",
+        "imagePath": "/project/Images/Armors/crystal2.png",
+        "description": "守 8",
+        "description2": "敏捷 + 1"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 8
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "agile",
+            "to_apply": "victim",
+            "amount": 1
+        }
+    }
+}

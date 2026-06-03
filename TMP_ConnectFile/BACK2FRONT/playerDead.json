@@ -1,0 +1,5 @@
+{
+    "action" : "PlayerDead",
+    "name" : "Name",
+    "place" : "attacker / defender"
+}

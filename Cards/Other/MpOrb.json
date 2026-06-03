@@ -1,0 +1,22 @@
+{
+    "id": "MpOrb",
+    "type": "Attack",
+    "element": "NONE",
+    "ui": {
+        "name": "魔力球",
+        "imagePath": "/project/Images/Items/MpParticle.png",
+        "description": "20 mp",
+        "description2": "恢復 20 mp"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "mp",
+            "to_apply": "this",
+            "amount": 20
+        }
+    }
+}

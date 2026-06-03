@@ -1,0 +1,22 @@
+{
+    "id": "Buddha",
+    "type": "Attack",
+    "element": "NONE",
+    "ui": {
+        "name": "佛跳牆",
+        "imagePath": "/project/Images/Items/Buddha.png",
+        "description": "20 hp",
+        "description2": "恢復 20 hp"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "hp",
+            "to_apply": "this",
+            "amount": 20
+        }
+    }
+}

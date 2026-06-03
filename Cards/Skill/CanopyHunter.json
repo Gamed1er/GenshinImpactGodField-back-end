@@ -1,0 +1,26 @@
+{
+    "id": "CanopyHunter",
+    "type": "Attack",
+    "element": "DENDRO",
+    "ui": {
+        "name": "懸獵",
+        "imagePath": "/project/Images/Skills/CanopyHunter.png",
+        "description": "攻 2 燃燒 2",
+        "description2": "消耗 mp : 3"
+    },
+    "attribute": {
+        "attack": 2,
+        "defense": 0,
+        "mp_cost": 3
+    },
+    "effects": {
+        "skill": {
+            "mp_cost": 3
+        },
+        "apply_effects": {
+            "effect": "burning",
+            "to_apply": "victim",
+            "amount": 2
+        }
+    }
+}

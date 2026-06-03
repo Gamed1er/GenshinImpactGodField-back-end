@@ -1,0 +1,19 @@
+{
+    "id": "wipe_debuff",
+    "type": "Attack",
+    "element": "NONE",
+    "ui": {
+        "name": "七天神像",
+        "imagePath": "/project/Images/Items/wipe_debuff.png",
+        "description": "消除自身debuff"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 0
+    },
+    "effects": {
+        "wipe_effect": {
+            "to_apply": "this"
+        }
+    }
+}

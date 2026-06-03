@@ -1,0 +1,21 @@
+{
+    "id": "TheUnforged",
+    "type": "Attack",
+    "element": "GEO",
+    "ui": {
+        "name": "無工之劍",
+        "imagePath": "/project/Images/Weapons/TheUnforged.png",
+        "description": "攻 8",
+        "description2": "如果 SD > 0 傷害翻倍 "
+    },
+    "attribute": {
+        "attack": 8,
+        "defense": 0
+    },
+    "effects": {
+        "add_damage_when_shield": {
+            "readME": "如果有護盾則造成額外傷害",
+            "amount": 5
+        }
+    }
+}

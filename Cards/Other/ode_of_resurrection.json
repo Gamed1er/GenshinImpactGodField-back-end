@@ -1,0 +1,21 @@
+{
+    "id": "ode_of_resurrection",
+    "type": "NONE",
+    "element": "NONE",
+    "ui": {
+        "name": "熾烈的還魂詩",
+        "imagePath": "/project/Images/Items/ode_of_resurrection.png",
+        "description": "復活",
+        "description2": "受到致命傷後以 10hp 復活"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 0
+    },
+    "effects": {
+        "revive": {
+            "readME": "判定是否受到致命傷後自動觸發,判斷是否在手牌中",
+            "to_apply": "this"
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "id": "TheFlute",
+    "type": "Attack",
+    "element": "ANEMO",
+    "ui": {
+        "name": "笛劍",
+        "imagePath": "/project/Images/Weapons/TheFlute.png",
+        "description": "攻 5",
+        "description2" : "力量 + 1"
+    },
+    "attribute": {
+        "attack": 5,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "strength",
+            "to_apply": "attacker",
+            "amount": 1
+        }
+    }
+}

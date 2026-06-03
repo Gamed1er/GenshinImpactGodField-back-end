@@ -1,0 +1,21 @@
+{
+    "id": "Neuvillette",
+    "type": "AttackMuti",
+    "element": "HYDRO",
+    "ui": {
+        "name": "源水之滴",
+        "imagePath": "/project/Images/Items/Neuvillette.png",
+        "description": "附加屬性",
+        "description2": "攻 +5 並附加水"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 0
+    },
+    "effects": {
+        "change_attack_attribute": {
+            "attack": 5,
+            "element": "HYDRO"
+        }
+    }
+}

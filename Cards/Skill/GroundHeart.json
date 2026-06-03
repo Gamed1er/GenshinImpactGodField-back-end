@@ -1,0 +1,26 @@
+{
+    "id": "GroundHeart",
+    "type": "Attack",
+    "element": "GEO",
+    "ui": {
+        "name": "地心",
+        "imagePath": "/project/Images/Skills/GroundHeart.png",
+        "description": "護盾 + 12",
+        "description2": "消耗 mp : 5"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 0,
+        "mp_cost": 5
+    },
+    "effects": {
+        "skill": {
+            "mp_cost": 5
+        },
+        "apply_effects": {
+            "effect": "shield",
+            "to_apply": "this",
+            "amount": 12
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "id": "FriedEgg",
+    "type": "Attack",
+    "element": "NONE",
+    "ui": {
+        "name": "荷包蛋",
+        "imagePath": "/project/Images/Items/FriedEgg.png",
+        "description": "5hp",
+        "description2": "恢復5hp"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "hp",
+            "to_apply": "this",
+            "amount": 5
+        }
+    }
+}

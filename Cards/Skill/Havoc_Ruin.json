@@ -1,0 +1,21 @@
+{
+    "id": "Havoc_Ruin",
+    "type": "Attack",
+    "element": "ABYSS",
+    "ui": {
+        "name": "群星既滅",
+        "imagePath": "/project/Images/Skills/Havoc_Ruin.png",
+        "description": "攻 15",
+        "description2": "消耗 mp : 30"
+    },
+    "attribute": {
+        "attack": 15,
+        "defense": 0,
+        "mp_cost": 30
+    },
+    "effects": {
+        "skill": {
+            "mp_cost": 30
+        }
+    }
+}

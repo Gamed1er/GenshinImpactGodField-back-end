@@ -1,0 +1,21 @@
+{
+    "id": "zhongli",
+    "type": "Attack",
+    "element": "NONE",
+    "ui": {
+        "name": "安如磐石",
+        "imagePath": "/project/Images/Items/zhongli.png",
+        "description": "護盾 + 20"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "shield",
+            "to_apply": "this",
+            "amount": 20
+        }
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "OTidesIHaveReturned",
+    "type": "Attack",
+    "element": "HYDRO",
+    "ui": {
+        "name": "潮水啊, 我已歸來",
+        "imagePath": "/project/Images/Skills/OTidesIHaveReturned.png",
+        "description": "80%, 攻 20",
+        "description2": "消耗 mp : 12"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 0,
+        "mp_cost": 12
+    },
+    "effects": {
+        "skill": {
+            "mp_cost": 12
+        },
+        "attack_all_player": {
+            "attack": 20,
+            "rate": 0.8
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "id": "CrimsonMoonSemblance",
+    "type": "Attack",
+    "element": "PYRO",
+    "ui": {
+        "name": "赤月之形",
+        "imagePath": "/project/Images/Weapons/CrimsonMoonSemblance.png",
+        "description": "攻 12",
+        "description2": "HP - 4"
+    },
+    "attribute": {
+        "attack": 12,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "hp",
+            "to_apply": "attacker",
+            "amount": 4
+        }
+    }
+}

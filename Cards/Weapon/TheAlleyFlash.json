@@ -1,0 +1,22 @@
+{
+    "id": "TheAlleyFlash",
+    "type": "Attack",
+    "element": "ELECTRO",
+    "ui": {
+        "name": "暗巷閃光",
+        "imagePath": "/project/Images/Weapons/TheAlleyFlash.png",
+        "description": "攻 4",
+        "description2": "敏捷 + 2"
+    },
+    "attribute": {
+        "attack": 4,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "agile",
+            "to_apply": "attacker",
+            "amount": 2
+        }
+    }
+}

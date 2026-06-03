@@ -1,0 +1,21 @@
+{
+    "id": "ThunderingPulse",
+    "type": "Attack",
+    "element": "ELECTRO",
+    "ui": {
+        "name": "飛雷之振弦",
+        "imagePath": "/project/Images/Weapons/ThunderingPulse.png",
+        "description": "30% 攻 25"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 0
+    },
+    "effects": {
+        "attack_all_player": {
+            "readME": "針對每一個玩家，觸發一次攻擊事件",
+            "attack": 25,
+            "rate": 0.3
+        }
+    }
+}

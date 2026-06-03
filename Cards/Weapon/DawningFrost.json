@@ -1,0 +1,22 @@
+{
+    "id": "DawningFrost",
+    "type": "Attack",
+    "element": "CRYO",
+    "ui": {
+        "name": "霜辰",
+        "imagePath": "/project/Images/Weapons/DawningFrost.png",
+        "description": "攻 5",
+        "description2": "力量 + 2"
+    },
+    "attribute": {
+        "attack": 5,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "strength",
+            "to_apply": "attacker",
+            "amount": 2
+        }
+    }
+}

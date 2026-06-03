@@ -1,0 +1,22 @@
+{
+    "id": "MpParticle",
+    "type": "Attack",
+    "element": "NONE",
+    "ui": {
+        "name": "魔力微粒",
+        "imagePath": "/project/Images/Items/MpOrb.png",
+        "description": "5mp",
+        "description2": "恢復5mp"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "mp",
+            "to_apply": "this",
+            "amount": 5
+        }
+    }
+}

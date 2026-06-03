@@ -1,0 +1,22 @@
+{
+    "id": "SacredWinds",
+    "type": "Attack",
+    "element": "ANEMO",
+    "ui": {
+        "name": "四風原典",
+        "imagePath": "/project/Images/Weapons/SacredWinds.png",
+        "description": "攻 7",
+        "description2": "敏捷 + 2"
+    },
+    "attribute": {
+        "attack": 7,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "agile",
+            "to_apply": "attacker",
+            "amount": 2
+        }
+    }
+}

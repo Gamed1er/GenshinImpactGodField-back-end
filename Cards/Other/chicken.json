@@ -1,0 +1,22 @@
+{
+    "id": "chicken",
+    "type": "Attack",
+    "element": "NONE",
+    "ui": {
+        "name": "田田花釀雞",
+        "imagePath": "/project/Images/Items/chicken.png",
+        "description": "15 hp",
+        "description2": "恢復 15 hp"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "hp",
+            "to_apply": "this",
+            "amount": 15
+        }
+    }
+}

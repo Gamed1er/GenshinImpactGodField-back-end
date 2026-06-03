@@ -1,0 +1,42 @@
+{
+    "id": "TheWidsith",
+    "type": "Attack",
+    "element": "ANEMO",
+    "ui": {
+        "name": "流浪樂章",
+        "imagePath": "/project/Images/Weapons/TheWidsith.png",
+        "description": "攻 5",
+        "description2": "觸發一個隨機的正面效果"
+    },
+    "attribute": {
+        "attack": 5,
+        "defense": 0
+    },
+    "effects": {
+        "randomly_trigger_effect": {
+            "readME": "隨機觸發以下事件的其中之一",
+            "polls": [
+                {
+                    "apply_effects": {
+                        "effect": "hp",
+                        "to_apply": "attacker",
+                        "amount": 5
+                    }
+                },
+                {
+                    "apply_effects": {
+                        "effect": "hp",
+                        "to_apply": "attacker",
+                        "amount": 5
+                    }
+                },
+                {
+                    "dealt_extra_damage": {
+                        "to_apply": "victim",
+                        "amount": 5
+                    }
+                }
+            ]
+        }
+    }
+}

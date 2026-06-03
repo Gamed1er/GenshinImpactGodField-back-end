@@ -1,0 +1,22 @@
+{
+    "id": "AquaSimulacra",
+    "type": "Attack",
+    "element": "HYDRO",
+    "ui": {
+        "name": "若水",
+        "imagePath": "/project/Images/Weapons/AquaSimulacra.png",
+        "description": "攻 6",
+        "description2": "HP + 3"
+    },
+    "attribute": {
+        "attack": 6,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "hp",
+            "to_apply": "attacker",
+            "amount": 3
+        }
+    }
+}

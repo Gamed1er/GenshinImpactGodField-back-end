@@ -1,0 +1,27 @@
+{
+    "id": "CalamityQueller",
+    "type": "Attack",
+    "element": "NONE",
+    "ui": {
+        "name": "息災",
+        "imagePath": "/project/Images/Weapons/CalamityQueller.png",
+        "description": "攻 10",
+        "description2": "對於有掛元素者 2 倍傷害"
+    },
+    "attribute": {
+        "attack": 10,
+        "defense": 0
+    },
+    "effects": {
+        "add_damage_when_exist_element": {
+            "element": [
+                "PYRO",
+                "HYDRO",
+                "ELECTRO",
+                "DENDRO",
+                "CRYO"
+            ],
+            "amount": 10
+        }
+    }
+}

@@ -1,0 +1,5 @@
+{
+    "action" : "CreateRoomResponse",
+    "status" : "Success",
+    "room_number" : 12345
+}

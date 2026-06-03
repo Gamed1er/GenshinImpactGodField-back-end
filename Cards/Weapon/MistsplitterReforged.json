@@ -1,0 +1,25 @@
+{
+    "id": "MistsplitterReforged",
+    "type": "Attack",
+    "element": "ELECTRO",
+    "ui": {
+        "name": "霧切之回光",
+        "imagePath": "/project/Images/Weapons/MistsplitterReforged.png",
+        "description": "攻 12",
+        "description2": "50% 機率爆擊，恢復 8 mp"
+    },
+    "attribute": {
+        "attack": 12,
+        "defense": 0
+    },
+    "effects": {
+        "critic": {
+            "rate": 0.5
+        },
+        "apply_effects": {
+            "effect": "mp",
+            "to_apply": "attacker",
+            "amount": 8
+        }
+    }
+}

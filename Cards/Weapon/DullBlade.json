@@ -1,0 +1,22 @@
+{
+    "id": "DullBlade",
+    "type": "Attack",
+    "element": "NONE",
+    "ui": {
+        "name": "無鋒劍",
+        "imagePath": "/project/Images/Weapons/DullBlade.png",
+        "description": "攻 2",
+        "description2": "力量 + 1"
+    },
+    "attribute": {
+        "attack": 2,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "strength",
+            "to_apply": "attacker",
+            "amount": 1
+        }
+    }
+}

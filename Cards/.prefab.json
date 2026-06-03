@@ -1,0 +1,104 @@
+{
+    "id" : "ID",
+    "type" : "Attack, Defense, Both //可以在甚麼時候打出",
+    "element" : "NONE 無, ANEMO 風, GEO 岩, ELECTRO 雷, DENDRO 草, HYDRO 水, PYRO 火, CRYO 冰, ABYSS 深淵",
+    "ui" : {
+        "name" : "",
+        "imagePath" : "",
+        "description" : "",
+        "description2" : ""
+    },
+    "attribute" : {
+        "attack" : 0,
+        "defense" : 0
+    },
+    "effects" : {
+        "change_attack_attribute" : {
+            "readME" : "更改一個攻擊事件中，攻擊的效果",
+            "attack": "攻擊的變動值，例如 -5 是攻擊 -5",
+            "element" : "轉變攻擊的屬性值"
+        },
+        "apply_element" : {
+            "readME" : "在一次事件中，賦予誰甚麼屬性",
+            "to_apply" : "attacker, victim, this, everyone",
+            "element" : "賦予的元素"
+        },
+        "apply_effects" : {
+            "readME" : "在一次事件中，賦予多少屬性質",
+            "effect" : "hp, mp, shield, strength, agile, frozen, burning",
+            "to_apply" : "attacker, victim, this",
+            "amount" : "數值"
+        },
+        "apply_effects2" : {
+            "readME" : "在一次事件中，賦予多少屬性質",
+            "effect" : "hp, mp, shield, strength, agile, frozen, burning",
+            "to_apply" : "attacker, victim, this",
+            "amount" : "數值"
+        },
+        "drop_cards" : {
+            "readME" : "在一次事件中，隨機丟棄多少牌",
+            "to_apply" : "attacker, victim, this",
+            "amount" : "丟牌量，該數值大於 0"
+        },
+        "critic" : {
+            "readME" : "攻擊武器有概率爆擊，造成 2 倍傷害",
+            "rate" : "機率，不小於 0，不大於 1"
+        },
+        "add_damage_when_exist_element" : {
+            "readME" : "當有效果的時候造成額外傷害",
+            "element" : ["賦予的元素"],
+            "amount" : "傷害量"
+        },
+        "randomly_trigger_effect" : {
+            "readME" : "隨機觸發以下事件的其中之一",
+            "polls" : [
+                
+            ]
+        },
+        "dealt_extra_damage" : {
+            "readME" : "額外造成真實傷害",
+            "to_apply" : "attacker, victim, this",
+            "amount" : "數值"
+        },
+        "attack_all_player" : {
+            "readME" : "針對每一個玩家，觸發一次攻擊事件",
+            "attack" : "數值",
+            "rate" : "機率，不小於 0，不大於 1"
+        },
+        "all_or_nothing" : {
+            "readME" : "棄多少拿多少",
+            "to_apply" : "attacker, victim, this",
+            "amount" : "all"
+        },
+        "change_card" : {
+            "readME" : "隨機和目標交換一張牌",
+            "to_apply" : "attacker, victim, this",
+            "amount" : "1"
+        },
+        "trade":{
+            "readME" : "告訴後端觸發找換效果"
+        },
+        "revive":{
+            "readME":"判定是否受到致命傷後自動觸發,判斷是否在手牌中",
+            "to_apply":"victim, this"
+        },
+        "wipe_effect":{
+            "to_apply":"this"
+        },
+        "skill" :{
+            "readME" : "需要多少魔力才能打出",
+            "mp_cost" : "大於 0"
+        },
+        "spike" : {
+            "readME" : "反彈 50% 傷害",
+            "to_apply" : "attacker"
+        },
+        "remove_negative_effect":{
+            "readME" : "解除負面效果"
+        },
+        "add_damage_when_frozen" : {
+            "readME" : "如果有凍結額外造成傷害",
+            "amount" : 10
+        }
+    }
+}

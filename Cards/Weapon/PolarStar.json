@@ -1,0 +1,21 @@
+{
+    "id": "PolarStar",
+    "type": "Attack",
+    "element": "CRYO",
+    "ui": {
+        "name": "冬極白星",
+        "imagePath": "/project/Images/Weapons/PolarStar.png",
+        "description": "攻 7",
+        "description2": "對於凍結 4 倍傷害"
+    },
+    "attribute": {
+        "attack": 7,
+        "defense": 0
+    },
+    "effects": {
+        "add_damage_when_frozen": {
+            "readME": "如果有凍結額外造成傷害",
+            "amount": 21
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "id": "AThousandFloatingDreams",
+    "type": "Attack",
+    "element": "DENDRO",
+    "ui": {
+        "name": "千夜浮夢",
+        "imagePath": "/project/Images/Weapons/AThousandFloatingDreams.png",
+        "description": "攻 5",
+        "description2": "HP + 16"
+    },
+    "attribute": {
+        "attack": 5,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "hp",
+            "to_apply": "attacker",
+            "amount": 16
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "id": "DarkIronSword",
+    "type": "Attack",
+    "element": "DENDRO",
+    "ui": {
+        "name": "暗鐵劍",
+        "imagePath": "/project/Images/Weapons/DarkIronSword.png",
+        "description": "攻 5",
+        "description2": "恢復 5 點MP"
+    },
+    "attribute": {
+        "attack": 5,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "mp",
+            "to_apply": "attacker",
+            "amount": 5
+        }
+    }
+}

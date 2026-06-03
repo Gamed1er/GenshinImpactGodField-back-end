@@ -1,0 +1,21 @@
+{
+    "id": "BigSword",
+    "type": "Attack",
+    "element": "ANEMO",
+    "ui": {
+        "name": "列風終墜",
+        "imagePath": "/project/Images/Skills/BigSword.png",
+        "description": "攻 8",
+        "description2": "消耗 mp : 6"
+    },
+    "attribute": {
+        "attack": 8,
+        "defense": 0,
+        "mp_cost": 6
+    },
+    "effects": {
+        "skill": {
+            "mp_cost": 6
+        }
+    }
+}

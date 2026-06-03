@@ -1,0 +1,22 @@
+{
+    "id": "DisasterOfTheEerieWater",
+    "type": "Attack",
+    "element": "HYDRO",
+    "ui": {
+        "name": "厄水之禍",
+        "imagePath": "/project/Images/Weapons/DisasterOfTheEerieWater.png",
+        "description": "攻 9",
+        "description2": "HP + 3"
+    },
+    "attribute": {
+        "attack": 9,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "hp",
+            "to_apply": "attacker",
+            "amount": 3
+        }
+    }
+}

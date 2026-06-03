@@ -1,0 +1,15 @@
+{
+    "id": "Absolution",
+    "type": "Attack",
+    "element": "ABYSS",
+    "ui": {
+        "name": "赦罪",
+        "imagePath": "/project/Images/Weapons/Absolution.png",
+        "description": "攻 6"
+    },
+    "attribute": {
+        "attack": 6,
+        "defense": 0
+    },
+    "effects": {}
+}

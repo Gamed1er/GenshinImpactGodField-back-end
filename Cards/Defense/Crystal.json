@@ -1,0 +1,16 @@
+{
+    "id": "Crystal",
+    "type": "Defense",
+    "element": "NONE",
+    "ui": {
+        "name": "水晶塊",
+        "imagePath": "/project/Images/Armors/crystal.png",
+        "description": "守 4",
+        "description2": ""
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 4
+    },
+    "effects": {}
+}

@@ -1,0 +1,22 @@
+{
+    "id": "Meteorite",
+    "type": "Defense",
+    "element": "NONE",
+    "ui": {
+        "name": "荒星",
+        "imagePath": "/project/Images/Armors/Meteorite.png",
+        "description": "守 7",
+        "description2": "使用後給予護盾 7"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 7
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "shield",
+            "to_apply": "victim",
+            "amount": 7
+        }
+    }
+}

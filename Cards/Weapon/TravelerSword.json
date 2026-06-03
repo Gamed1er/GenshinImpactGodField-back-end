@@ -1,0 +1,22 @@
+{
+    "id": "TravelerSword",
+    "type": "Attack",
+    "element": "NONE",
+    "ui": {
+        "name": "旅行劍",
+        "imagePath": "/project/Images/Weapons/TravelerSword.png",
+        "description": "80% | 8",
+        "description2": "全體玩家 80% 攻擊 8"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 0
+    },
+    "effects": {
+        "attack_all_player": {
+            "readME": "針對每一個玩家，觸發一次攻擊事件",
+            "attack": 8,
+            "rate": 0.8
+        }
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "id": "DragonBane",
+    "type": "Attack",
+    "element": "ELECTRO",
+    "ui": {
+        "name": "匣裡滅辰",
+        "imagePath": "/project/Images/Weapons/DragonBane.png",
+        "description": "攻 8",
+        "description2": "對於掛水、火屬性敵人傷害翻倍"
+    },
+    "attribute": {
+        "attack": 8,
+        "defense": 0
+    },
+    "effects": {
+        "add_damage_when_exist_element": {
+            "element": [
+                "PYRO",
+                "HYDRO"
+            ],
+            "amount": 8
+        }
+    }
+}

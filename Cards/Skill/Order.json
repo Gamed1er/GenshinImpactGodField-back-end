@@ -1,0 +1,21 @@
+{
+    "id": "Order",
+    "type": "Attack",
+    "element": "GEO",
+    "ui": {
+        "name": "天動萬象",
+        "imagePath": "/project/Images/Skills/Order.png",
+        "description": "攻 20",
+        "description2": "消耗 mp : 10"
+    },
+    "attribute": {
+        "attack": 20,
+        "defense": 0,
+        "mp_cost": 10
+    },
+    "effects": {
+        "skill": {
+            "mp_cost": 10
+        }
+    }
+}

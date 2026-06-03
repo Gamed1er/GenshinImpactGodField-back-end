@@ -1,0 +1,25 @@
+{
+    "id": "AllSchemesToKnow",
+    "type": "Attack",
+    "element": "DENDRO",
+    "ui": {
+        "name": "所聞遍計",
+        "imagePath": "/project/Images/Skills/AllSchemesToKnow.png",
+        "description": "50%, 攻10",
+        "description2": "消耗 mp : 7"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 0,
+        "mp_cost": 7
+    },
+    "effects": {
+        "attack_all_player": {
+            "attack": 10,
+            "rate": 0.5
+        },
+        "skill": {
+            "mp_cost": 7
+        }
+    }
+}

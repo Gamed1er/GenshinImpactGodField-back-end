@@ -1,0 +1,22 @@
+{
+    "id": "HpPosion",
+    "type": "Attack",
+    "element": "NONE",
+    "ui": {
+        "name": "回復藥水",
+        "imagePath": "/project/Images/Items/HpPosion.png",
+        "description": "10hp",
+        "description2": "恢復10hp"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "hp",
+            "to_apply": "this",
+            "amount": 10
+        }
+    }
+}

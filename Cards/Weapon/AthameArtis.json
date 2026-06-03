@@ -1,0 +1,15 @@
+{
+    "id": "AthameArtis",
+    "type": "Attack",
+    "element": "ABYSS",
+    "ui": {
+        "name": "腐植之劍",
+        "imagePath": "/project/Images/Weapons/AthameArtis.png",
+        "description": "攻 3"
+    },
+    "attribute": {
+        "attack": 3,
+        "defense": 0
+    },
+    "effects": {}
+}

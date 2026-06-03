@@ -1,0 +1,22 @@
+{
+    "id": "WolfGravestone",
+    "type": "Attack",
+    "element": "NONE",
+    "ui": {
+        "name": "狼的末路",
+        "imagePath": "/project/Images/Weapons/WolfGravestone.png",
+        "description": "攻 30",
+        "description2": "力量 + 5"
+    },
+    "attribute": {
+        "attack": 30,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "strength",
+            "to_apply": "attacker",
+            "amount": 5
+        }
+    }
+}

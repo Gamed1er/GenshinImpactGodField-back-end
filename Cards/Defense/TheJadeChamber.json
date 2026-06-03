@@ -1,0 +1,22 @@
+{
+    "id": "TheJadeChamber",
+    "type": "Defense",
+    "element": "NONE",
+    "ui": {
+        "name": "群玉閣",
+        "imagePath": "/project/Images/Armors/TheJadeChamber.png",
+        "description": "守 99",
+        "description2": "敏捷 - 3"
+    },
+    "attribute": {
+        "attack": 0,
+        "defense": 99
+    },
+    "effect": {
+        "apply_effects": {
+            "effect": "agile",
+            "to_apply": "victim",
+            "amount": -3
+        }
+    }
+}

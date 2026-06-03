@@ -1,0 +1,20 @@
+{
+    "id": "HarbingerOfDawn",
+    "type": "Attack",
+    "element": "NONE",
+    "ui": {
+        "name": "黎明劍",
+        "imagePath": "/project/Images/Weapons/HarbingerOfDawn.png",
+        "description": "攻 6",
+        "description2": "50% 機率爆擊"
+    },
+    "attribute": {
+        "attack": 6,
+        "defense": 0
+    },
+    "effects": {
+        "critic": {
+            "rate": 0.5
+        }
+    }
+}

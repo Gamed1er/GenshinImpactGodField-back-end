@@ -1,0 +1,21 @@
+{
+    "id": "MusouShinsetsu",
+    "type": "Attack",
+    "element": "ELECTRO",
+    "ui": {
+        "name": "無想的一刀",
+        "imagePath": "/project/Images/Skills/MusouShinsetsu.png",
+        "description": "攻 12",
+        "description2": "消耗 mp : 4"
+    },
+    "attribute": {
+        "attack": 12,
+        "defense": 0,
+        "mp_cost": 8
+    },
+    "effects": {
+        "skill": {
+            "mp_cost": 4
+        }
+    }
+}

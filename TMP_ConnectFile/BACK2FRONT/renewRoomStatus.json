@@ -1,0 +1,11 @@
+{
+    "action" : "RenewRoomStatus",
+    "room_status":{
+        "room_number" : 12345,
+        "players" : [
+            "Name1",
+            "Name2",
+            "Name3"
+        ]
+    }
+}

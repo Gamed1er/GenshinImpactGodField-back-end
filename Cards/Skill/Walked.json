@@ -1,0 +1,21 @@
+{
+    "id": "Walked",
+    "type": "Attack",
+    "element": "CRYO",
+    "ui": {
+        "name": "霰步",
+        "imagePath": "/project/Images/Skills/Walked.png",
+        "description": "攻 4",
+        "description2": "消耗 mp : 2"
+    },
+    "attribute": {
+        "attack": 4,
+        "defense": 0,
+        "mp_cost": 2
+    },
+    "effects": {
+        "skill": {
+            "mp_cost": 2
+        }
+    }
+}

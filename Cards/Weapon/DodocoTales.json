@@ -1,0 +1,22 @@
+{
+    "id": "DodocoTales",
+    "type": "Attack",
+    "element": "PYRO",
+    "ui": {
+        "name": "嘟嘟可故事集",
+        "imagePath": "/project/Images/Weapons/DodocoTales.png",
+        "description": "攻 9",
+        "description2": "力量 + 2"
+    },
+    "attribute": {
+        "attack": 9,
+        "defense": 0
+    },
+    "effects": {
+        "apply_effects": {
+            "effect": "strength",
+            "to_apply": "attacker",
+            "amount": 2
+        }
+    }
+}

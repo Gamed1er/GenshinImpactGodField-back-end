@@ -1,0 +1,7 @@
+{
+    "action" : "playCardRespond",
+    "player" : "Name1",
+    "cards" : [
+        "CardID1", "CardID2", "CardID3"
+    ]
+}

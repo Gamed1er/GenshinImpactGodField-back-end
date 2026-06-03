@@ -1,0 +1,21 @@
+{
+    "id": "HourOfBuringSkies",
+    "type": "Attack",
+    "element": "PYRO",
+    "ui": {
+        "name": "恭聽太陽的轟鳴",
+        "imagePath": "/project/Images/Skills/HourOfBuringSkies.png",
+        "description": "攻 30",
+        "description2": "消耗 mp : 15"
+    },
+    "attribute": {
+        "attack": 30,
+        "defense": 0,
+        "mp_cost": 15
+    },
+    "effects": {
+        "skill": {
+            "mp_cost": 12
+        }
+    }
+}
