@@ -36,7 +36,6 @@ class RoomController:
             }
         
     def join_room(self, client_id, data):
-        print(self.rooms)
         try:
             player_name = data.get("player_name", "未命名玩家")
             room_num = data.get("room_number")
@@ -70,7 +69,7 @@ class RoomController:
             }
         
         except Exception as e:
-            print(f"[Room_controller] 玩家 {player_name}({client_id}) 加入失敗 {e}")
+            print(f"[Room_controller] 玩家 {player_name}({client_id}) 加入失敗")
             return {
                     "action" : "JoinRoomResponse",
                     "status" : "Fail",
@@ -80,6 +79,7 @@ class RoomController:
     def leave_room(self, client_id, data):
         try:
             room_num = data.get("room_number")
+            room_num = int(room_num)
             player_name = data.get("player_name", "未命名玩家")
 
             if room_num not in self.rooms:
@@ -90,13 +90,13 @@ class RoomController:
                     "exception" : "room doesn't exist"
                 }
             
-            room = self.rooms[room_num]
+            target = self.rooms[room_num]
 
-            if client_id in room.players:
-                left_player = room.players.pop(client_id)
+            if client_id in target.players:
+                left_player = target.players.pop(client_id)
                 print(f"[Room_controller] 玩家 {player_name}({client_id}) 主動離開了房間 [{room_num}]")
 
-                if not room.players:
+                if not target.players:
                     del self.rooms[room_num]
                     print(f"[Room_controller] 房間 [{room_num}] 已經沒有任何人，自動銷毀房間")
                     return{
@@ -150,13 +150,14 @@ class RoomController:
                     }
                 
         return None
-
+    
     def create_player_list(self, room_num):
         List = []
         for player in self.rooms[room_num].players.values():
             List.append(player.name)
 
         return List
+
     
 room_controller = RoomController()
 

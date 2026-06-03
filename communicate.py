@@ -32,7 +32,7 @@ class Communicator:
                 self.clients[client_id] = client_socket
 
                 print(f"[Communicator] 玩家連線來自 {addr}，指派ID: {client_id}")
-                self.enqueue(client_id, "connect", {})
+                self._enqueue(client_id, "connect", {})
 
                 client_thread = threading.Thread(
                     target=self._listen_client_loop, 
@@ -65,7 +65,7 @@ class Communicator:
                         event_name = raw_data.get("action", "unknown")
 
                         print(f"[Communicator] 收到來自 {client_id} 的原始包裹 -> action : {event_name}")
-                        self.enqueue(client_id, event_name, raw_data)
+                        self._enqueue(client_id, event_name, raw_data)
                     except json.JSONDecodeError:
                         print(f"[Communicator] 來自 {client_id} 的訊息無法解析為JSON : {line}")
 
@@ -83,9 +83,9 @@ class Communicator:
             except:
                 pass
 
-            self.enqueue(client_id, "disconnect", {})
+            self._enqueue(client_id, "disconnect", {})
 
-    def enqueue(self, client_id, event_name, data):
+    def _enqueue(self, client_id, event_name, data):
         packet = {
             "client_id": client_id,
             "event": event_name,
