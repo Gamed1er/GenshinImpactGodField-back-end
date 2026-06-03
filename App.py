@@ -143,13 +143,20 @@ def main():
 
                     packets_to_send = game_instance.handle_play_card_respond(client_id, data)
 
+                    game_over = False
                     for pack in packets_to_send:
-                        target = pack["target"]
+                        target   = pack["target"]
                         msg_data = pack["data"]
                         if target == "broadcast":
                             broadcast_to_room(communicator, room_num, msg_data)
                         else:
                             communicator.send(target, msg_data)
+                        if msg_data.get("action") == "GameWin":
+                            game_over = True
+
+                    if game_over and room_num in room_controller.rooms:
+                        del room_controller.rooms[room_num]
+                        print(f"[App] 房間 [{room_num}] 遊戲結束，房間已關閉。")
 
             communicator.msg.task_done()
 
