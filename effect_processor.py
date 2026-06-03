@@ -138,21 +138,16 @@ class EffectProcessor:
         """回傳 (final_defense, additions)"""
         additions    = []
         base_defense = 0
-        defense_card_count = 0
 
         for card in cards:
             if not card:
                 continue
-            defense_val = card.get("attribute", {}).get("defense", 0)
-            if defense_val > 0:
-                base_defense += defense_val
-                defense_card_count += 1
+            base_defense += card.get("attribute", {}).get("defense", 0)
 
-        # agile 對每張防禦牌各加一次，無防禦牌時不加
-        if defender.agile != 0 and defense_card_count > 0:
-            agile_bonus   = defender.agile * defense_card_count
-            base_defense += agile_bonus
-            additions.append(f"敏捷 {defender.agile:+d} x{defense_card_count}")
+        # 敏捷加總防禦，只作用一次（需有防禦牌才生效）
+        if defender.agile != 0 and base_defense > 0:
+            base_defense += defender.agile
+            additions.append(f"敏捷 {defender.agile:+d}")
 
         return max(0, base_defense), additions
 
@@ -163,6 +158,13 @@ class EffectProcessor:
     @staticmethod
     def get_reaction_key(attack_element: str, victim: player) -> str | None:
         victim_element = victim.element if victim.element else "NONE"
+
+        # GEO：攻擊或身上有 GEO 時，只要另一方不是 NONE 就觸發反應
+        if attack_element == "GEO" and victim_element != "NONE":
+            return "geo"
+        if victim_element == "GEO" and attack_element not in ("NONE", "ANEMO", "GEO", "ABYSS"):
+            return "geo"
+
         if attack_element == "NONE" or victim_element == "NONE":
             return None
         return ELEMENT_REACTIONS.get((attack_element, victim_element))
@@ -180,6 +182,13 @@ class EffectProcessor:
         """
         effect_log = []
 
+        # GEO 反應：給攻擊者 5 點護盾，清除受害者元素，不掛新元素
+        if reaction_key == "geo":
+            victim.element = "NONE"
+            attacker.shield = min(99, attacker.shield + 5)
+            effect_log.append({"target": "attacker", "type": "shield", "amount": 5})
+            return effect_log
+
         if reaction_key is None:
             # 無反應：直接掛元素
             if attack_element not in ("NONE", "ANEMO", "GEO", "ABYSS"):
@@ -190,33 +199,28 @@ class EffectProcessor:
         victim.element = "NONE"
 
         if reaction_key == "burning":
-            victim.burning += 1
-            effect_log.append({"target": "victim", "type": "burn", "amount": 1})
+            victim.burning += 4
+            effect_log.append({"target": "victim", "type": "burn", "amount": 4})
 
         elif reaction_key == "frozen":
             victim.frozen = 1
             effect_log.append({"target": "victim", "type": "frozen", "amount": 1})
 
         elif reaction_key == "hydro_electro":
-            victim.strength -= 1
-            effect_log.append({"target": "victim", "type": "strength", "amount": -1})
+            victim.strength -= 4
+            effect_log.append({"target": "victim", "type": "strength", "amount": -4})
 
         elif reaction_key == "hydro_dendro":
-            victim.agile -= 1
-            effect_log.append({"target": "victim", "type": "agile", "amount": -1})
+            victim.agile -= 4
+            effect_log.append({"target": "victim", "type": "agile", "amount": -4})
 
         elif reaction_key == "cryo_electro":
-            attacker.strength += 1
-            effect_log.append({"target": "attacker", "type": "strength", "amount": 1})
+            attacker.strength += 4
+            effect_log.append({"target": "attacker", "type": "strength", "amount": 4})
 
         elif reaction_key == "cryo_dendro":
-            attacker.agile += 1
-            effect_log.append({"target": "attacker", "type": "agile", "amount": 1})
-
-        # GEO：與任何元素反應時給攻擊者 2 護盾
-        if attack_element == "GEO" or victim.element == "GEO":
-            attacker.shield += 2
-            effect_log.append({"target": "attacker", "type": "shield", "amount": 2})
+            attacker.agile += 4
+            effect_log.append({"target": "attacker", "type": "agile", "amount": 4})
 
         return effect_log
 
@@ -293,7 +297,8 @@ class EffectProcessor:
         caster: player,
         attacker: player | None,
         victim: player | None,
-        cards_database: dict | None = None   # 給 randomly_trigger_effect 用
+        cards_database: dict | None = None,
+        hit_victim: bool = True          # 攻擊有穿透護盾時才能對 victim 生效
     ) -> list[dict]:
         """
         結算道具牌 / 防禦牌上的效果。
@@ -356,15 +361,22 @@ class EffectProcessor:
             # ── apply_element ──────────────────────
             if "apply_element" in effects:
                 cfg    = effects["apply_element"]
-                target = _resolve_target(cfg.get("to_apply", "this"))
+                to_app = cfg.get("to_apply", "this")
+                target = _resolve_target(to_app)
                 elem   = cfg.get("element", "NONE")
-                if target and elem != "NONE":
+                # 套用到 victim 時需要有穿透
+                if target and elem != "NONE" and not (to_app == "victim" and not hit_victim):
                     target.element = elem
 
             # ── apply_effects / apply_effects2 ─────
             for key in ("apply_effects", "apply_effects2"):
                 if key in effects:
-                    _apply_one_effect(effects[key])
+                    cfg    = effects[key]
+                    to_app = cfg.get("to_apply", "this")
+                    # 套用到 victim 時需要有穿透
+                    if to_app == "victim" and not hit_victim:
+                        continue
+                    _apply_one_effect(cfg)
 
             # ── randomly_trigger_effect ────────────
             if "randomly_trigger_effect" in effects:
@@ -415,6 +427,9 @@ class EffectProcessor:
         attr = stat_map.get(stat)
         if attr is None:
             return
+        # 回血時加上 agile 加乘
+        if attr == "hp" and amount > 0:
+            amount += target.agile
         new_val = getattr(target, attr, 0) + amount
         if attr in ("shield", "burning", "frozen", "hp", "mp"):
             new_val = max(0, new_val)

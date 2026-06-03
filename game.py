@@ -146,7 +146,7 @@ class Game:
                         "data": {
                             "action": "PlayerDead",
                             "name"  : current_player.name,
-                            "place" : "burn"
+                            "place" : "attacker"
                         }
                     })
                     alive_players = [p for p in self.players.values() if p.alive]
@@ -241,13 +241,16 @@ class Game:
         """
         消耗的牌從手牌移除，並補回等量的牌。
         skill 牌例外：不移除，但仍補一張新牌。
+        手牌上限為 16。
         """
         for card_id in used_card_ids:
             card_info = self.cards_database.get(card_id)
             is_skill  = card_info and "skill" in card_info.get("effects", {})
             if not is_skill and card_id in p.hand:
                 p.hand.remove(card_id)
-        p.hand.extend(self.draw_random_cards(len(used_card_ids)))
+        new_cards = self.draw_random_cards(len(used_card_ids))
+        space     = max(0, 16 - len(p.hand))
+        p.hand.extend(new_cards[:space])
 
     # ════════════════════════════════════════════════
     #  遊戲開始
@@ -309,8 +312,19 @@ class Game:
             print(f"[Game] handle_play_card：找不到攻擊者 {attacker_name}")
             return []
 
-        # 取得牌的詳細資料
-        played_cards = [self.cards_database.get(cid) for cid in played_card_ids]
+        # 取得牌的詳細資料（過濾找不到的牌並 log 警告）
+        played_cards = []
+        for cid in played_card_ids:
+            card = self.cards_database.get(cid)
+            if card is None:
+                print(f"[Game] 警告：卡片 ID [{cid}] 在資料庫中找不到，已略過")
+            else:
+                played_cards.append(card)
+
+        # 若有傳卡片 ID 但全部找不到，直接 log 並返回，不推進回合
+        if played_card_ids and not played_cards:
+            print(f"[Game] 警告：{attacker_name} 傳入的卡片全部無效，忽略此次出牌")
+            return []
 
         # ── 判斷牌的類型 ──────────────────────────────
         has_aoe     = any(EffectProcessor.is_aoe_card(c)     for c in played_cards if c)
@@ -346,8 +360,12 @@ class Game:
                 cards_database  = self.cards_database
             )
 
-            # 補牌
-            self._replenish_hand(attacker_obj, played_card_ids)
+            # 補牌（若沒有出任何牌，仍補一張）
+            if played_card_ids:
+                self._replenish_hand(attacker_obj, played_card_ids)
+            else:
+                if len(attacker_obj.hand) < 16:
+                    attacker_obj.hand.extend(self.draw_random_cards(1))
 
             packets.append({
                 "target": "broadcast",
@@ -569,10 +587,10 @@ class Game:
         else:
             net_damage = max(0, raw_attack - final_defense - defender_obj.shield)
 
-        if net_damage > 0:
+        if raw_attack > 0:
             reaction_key = EffectProcessor.get_reaction_key(attack_element, defender_obj)
         else:
-            reaction_key = None  # 被完全防禦住，不掛元素、不觸發元素反應
+            reaction_key = None
 
         # 深淵：先算一般傷害，再獨立結算斬殺
         is_abyss = EffectProcessor.is_instant_kill(attack_element)
@@ -602,42 +620,42 @@ class Game:
             caster         = attacker_obj,
             attacker       = attacker_obj,
             victim         = defender_obj,
-            cards_database = self.cards_database
+            cards_database = self.cards_database,
+            hit_victim     = raw_attack > 0
         )
 
-        # ── 第一個 PlayerRoundEnd（一般傷害）─────────
+        # ── 組合 round_effects ────────────────────────
         round_effects = []
         if dmg_shield > 0:
             round_effects.append({"target": "victim", "type": "shield", "amount": -dmg_shield})
         if dmg_hp > 0:
             round_effects.append({"target": "victim", "type": "damage", "amount": dmg_hp})
         if was_dead and revived and defender_obj.alive:
-            round_effects.append({"target": "victim", "type": "heal",   "amount": 10})
+            revive_heal = min(99, 10 + defender_obj.agile)
+            defender_obj.hp = min(99, revive_heal)
+            round_effects.append({"target": "victim", "type": "heal", "amount": revive_heal})
         round_effects += reaction_log
         round_effects += attack_effect_log
         round_effects += defend_effect_log
 
+        # ── 深淵：斬殺效果合併進 round_effects ────────
+        if is_abyss and raw_attack > final_defense and defender_obj.alive:
+            abyss_damage       = defender_obj.hp
+            defender_obj.hp    = 0
+            defender_obj.alive = False
+            revived_abyss      = EffectProcessor.check_revive(defender_obj, self.cards_database)
+            if revived_abyss:
+                revive_heal = min(99, 10 + defender_obj.agile)
+                defender_obj.hp = min(99, revive_heal)
+                round_effects.append({"target": "victim", "type": "heal",  "amount": revive_heal})
+            else:
+                round_effects.append({"target": "victim", "type": "abyss", "amount": abyss_damage})
+
+        # ── 單一 PlayerRoundEnd ───────────────────────
         packets.append({
             "target": "broadcast",
             "data": {"action": "PlayerRoundEnd", "effects": round_effects}
         })
-
-        # ── 深淵：第二個 PlayerRoundEnd（斬殺）────────
-        if is_abyss and defender_obj.alive:
-            abyss_damage = defender_obj.hp  # 剩餘 HP 即為 abyss 造成的傷害
-            defender_obj.hp    = 0
-            defender_obj.alive = False
-            # 深淵也可觸發復活
-            was_dead_abyss = True
-            revived_abyss  = EffectProcessor.check_revive(defender_obj, self.cards_database)
-            if not revived_abyss:
-                packets.append({
-                    "target": "broadcast",
-                    "data": {
-                        "action" : "PlayerRoundEnd",
-                        "effects": [{"target": "victim", "type": "abyss", "amount": abyss_damage}]
-                    }
-                })
 
         # ── 玩家死亡通知 ──────────────────────────────
         if not defender_obj.alive:

@@ -30,6 +30,7 @@ def main():
             client_id = packet["client_id"]
             event = packet["event"]
             data = packet["data"]
+            print(f"[App] 玩家 {client_id} 傳送了 {data}")
             if event == "CreateRoom":                 
                 response = room_controller.create_room(client_id, data)
                 communicator.send(client_id, response)

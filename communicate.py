@@ -3,6 +3,16 @@ import json
 import queue
 import threading
 
+def get_local_ip():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        s.close()
+        return ip
+    except Exception:
+        return "無法取得 IP"
+
 class Communicator:
     def __init__(self, host="0.0.0.0", port=65432):
         self.host = host
@@ -18,7 +28,9 @@ class Communicator:
         self.server_socket.bind((self.host, self.port))
         self.server_socket.listen()
 
+        local_ip = get_local_ip()
         print(f"[Communicator] 伺服器已啟動，正監聽Port {self.port}")
+        print(f"[Communicator] 本機 IP：{local_ip}")
 
         accept_thread = threading.Thread(target=self._accept_loop, daemon=True)
         accept_thread.start()
